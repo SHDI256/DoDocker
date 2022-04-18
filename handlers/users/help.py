@@ -4,10 +4,23 @@ from aiogram.dispatcher.filters.builtin import CommandHelp
 from loader import dp
 
 
-@dp.message_handler(CommandHelp())
+@dp.message_handler(CommandHelp(), state='*')
 async def bot_help(message: types.Message):
     text = ("Список команд: ",
             "/start - Начать диалог",
-            "/help - Получить справку")
+            "/help - Получить справку",
+            '/bot - Взаимодействовать с ботом',
+            '/register - Зарегестрироваться',
+            '',
+            '/docker - Упаковать программу',
+            '/support - Включить саппорт-меню',
+            '/req - Требования к упаковываемой программе')
     
     await message.answer("\n".join(text))
+
+
+@dp.message_handler(state='*', commands=['req'])
+async def set_docker_state(message: types.Message):
+    await message.answer('Данный бот упаковывает программы Python с помощью технологии Docker. '
+                         'Всё происходит автоматически: вам лишь нужно отправить архив с программой в формате .zip, '
+                         'в котором ОБЯЗАТЕЛЬНО должен находиться главный файл (main.py либо app.py)')

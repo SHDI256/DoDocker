@@ -8,16 +8,9 @@ BOT_TOKEN = env.str('BOT_TOKEN')
 ADMINS = env.list('ADMINS')
 IP = env.str('ip')
 PASSWORD = env.str('PASSWORD')
+SUPPORTS = env.list('SUPPORTS')
 
-database = env.str("database")
+database_path = env.str('database_path')
 
-if database == "postgresql":
-    postgresql = {'pguser': env.str("pguser"),
-              'pgpasswd': env.str("pgpasswd"),
-              'pghost': env.str("pghost"),
-              'pgport': env.int("pgport"),
-              'pgdb': env.str("pgdb")
-              }
-
-elif database == "sqlite":
-    database_path = env.str("bdname")
+MAIL = env.str('MAIL')
+MAIL_PASSWORD = env.str('MAIL_PASSWORD')

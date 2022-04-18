@@ -11,4 +11,4 @@ def get_engine():
 def get_session():
     engine = create_engine(f'sqlite:///{config.database_path}', echo=True)
     Session = sessionmaker(bind=engine)
-    return
+    return Session()
