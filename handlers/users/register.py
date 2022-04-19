@@ -1,11 +1,11 @@
 from aiogram import types
-from loader import dp, bot, Session
+from loader import dp, bot, Session, engine
 
 from states.user_states import BaseStates, RegisterStates
 
 from keyboards.inline.register import get_keyboard_for_register
 
-from data.db_api.create_tables import User, Containers
+from data.db_api.create_tables import User, Containers, Base
 
 import re
 
@@ -16,12 +16,20 @@ async def set_register_state(message: types.Message):
     await state.set_state(RegisterStates.all_states[0])
 
     name = message.from_user.username
-    buttons_text = ('Да', 'Нет, сменить никнейм')
-    buttons_callback_data = ('set', 'change')
-    kb = get_keyboard_for_register(buttons_text, buttons_callback_data)
+    if name == 'None':
+        await state.set_state(RegisterStates.all_states[1])
 
-    await message.answer(f'Никнейм по умолчанию :{name}\n\nПродолжить регистрацию?',
-                         reply_markup=kb)
+        await bot.send_message(message.from_user.id, 'Придумайте свой новый никнейм')
+
+        await message.answer()
+
+    else:
+        buttons_text = ('Да', 'Нет, сменить никнейм')
+        buttons_callback_data = ('set', 'change')
+        kb = get_keyboard_for_register(buttons_text, buttons_callback_data)
+
+        await message.answer(f'Никнейм по умолчанию: {name}\n\nПродолжить регистрацию?',
+                             reply_markup=kb)
 
 
 @dp.callback_query_handler(lambda call: call.data == 'set', state=RegisterStates.all_states[0])
@@ -61,15 +69,20 @@ async def set_nickname(message: types.Message):
         state = dp.current_state(user=message.from_user.id)
         state_data = await state.get_data()
 
-        user = User()
-        user.name = state_data['nickname']
-        user.email = message.text
-        Session.add(user)
-        Session.commit()
+        if message.from_user.id in [user.id_user for user in Session.query(User).all()]:
+            await message.answer('Вы уже зарегистрированы!')
 
-        await message.answer('Регистрация прошла успешно!')
+        else:
+            new_user = User()
+            new_user.id_user = message.from_user.id
+            new_user.name = state_data['nickname']
+            new_user.email = message.text
+            Session.add(new_user)
+            Session.commit()
+#
+            await message.answer('Регистрация прошла успешно!')
 
-        state = dp.current_state(user=message.from_user.id)
         await state.set_state(BaseStates.all_states[0])
+
     else:
         await message.answer('Некорректный email, попробуйте ещё раз')

@@ -8,8 +8,6 @@ from handlers.users.start import bot_start
 from handlers.users.help import bot_help
 
 
-
-
 async def on_startup(dispatcher):
     await set_default_commands(dispatcher)
     await on_startup_notify(dispatcher)

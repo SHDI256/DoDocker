@@ -11,6 +11,3 @@ PASSWORD = env.str('PASSWORD')
 SUPPORTS = env.list('SUPPORTS')
 
 database_path = env.str('database_path')
-
-MAIL = env.str('MAIL')
-MAIL_PASSWORD = env.str('MAIL_PASSWORD')

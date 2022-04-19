@@ -10,6 +10,7 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    id_user = Column(Integer)
     name = Column(String)
     email = Column(String)
     containers = orm.relation('Containers', back_populates='user')

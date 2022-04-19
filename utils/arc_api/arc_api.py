@@ -2,7 +2,6 @@ from zipfile import ZipFile
 from pathlib import Path
 
 
-
 def extract_all(archive, out_dir):
     with ZipFile(archive, 'r') as arc:
         arc.extractall(out_dir)
