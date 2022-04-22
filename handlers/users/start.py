@@ -10,11 +10,6 @@ from keyboards.inline.main_menu import get_main_menu_keyboard
 
 @dp.message_handler(CommandStart(), state='*')
 async def bot_start(message: types.Message):
-    if message.from_user.id not in [user.id_user for user in Session.query(TrialAccess).all()]:
-        new_trial = TrialAccess()
-        new_trial.id_user = message.from_user.id
-        new_trial.is_trial = True
-
     if message.from_user.id in [user.id_user for user in Session.query(User).all()]:
         keyboard = get_main_menu_keyboard()
 

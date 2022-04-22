@@ -21,7 +21,6 @@ class TrialAccess(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     id_user = Column(Integer)
-    is_trial = Column(Boolean)
 
 
 class Containers(Base):
@@ -30,4 +29,5 @@ class Containers(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String, unique=True)
     user_id = Column(Integer, ForeignKey("users.id_user"))
+    name = Column(String)
     user = orm.relation('User')

@@ -12,9 +12,9 @@ from data.db_api.create_tables import User, Containers, Base
 async def new_container(message: types.Message):
     if message.from_user.id in [user.id_user for user in Session.query(User).all()]:
         state = dp.current_state(user=message.from_user.id)
-        await state.set_state(BaseStates.all_states[2])
+        await state.set_state(BaseStates.all_states[3])
 
-        await bot.send_message(message.from_user.id, 'Бот готов! Отправьте вашу программу в формате .zip')
+        await bot.send_message(message.from_user.id, 'Бот готов! Назовите ваш контейнер')
 
 
 @dp.message_handler(lambda msg: msg.text == 'Мои контейнеры', state='*')
@@ -26,7 +26,7 @@ async def user_containters(message: types.Message):
             keyboard = get_management_keyboard()
 
             await bot.send_message(message.from_user.id, 'Ваши контейнеры:\n\n' + '\n'.join(
-                [f'{i + 1}. {container.key}' for i, container in enumerate(containers)]),
+                [f'{i + 1}. {container.name}' for i, container in enumerate(containers)]),
                                    reply_markup=keyboard)
 
         else:
@@ -43,6 +43,6 @@ async def req(message: types.Message):
                                               'в котором ОБЯЗАТЕЛЬНО должен находиться главный файл (main.py либо app.py)')
 
 
-@dp.message_handler(lambda msg: msg.text == 'Как это работает?ц', state='*')
+@dp.message_handler(lambda msg: msg.text == 'Как это работает?', state='*')
 async def how(message: types.Message):
     await message.answer('Поиск главного файла\nВыявление зависимостей\nСоздание Dockerfile`а\nСоздание образа\nУпаковка контейнера')

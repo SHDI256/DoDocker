@@ -2,19 +2,13 @@ import utils.arc_api as arc_api
 import os
 import json
 import shutil
-import asyncio
 from random import choice
 
-
-async def run(cmd):
-    proc = await asyncio.create_subprocess_shell(
-        cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE)
+from data.config import PASSWORD
 
 
 async def get_container(archive, output_dir):
-    KEY = ''.join([choice(list('abcdefghijklmnopqrstuvwxyz1234567890_')) for _ in range(16)])
+    key = ''.join([choice(list('abcdefghijklmnopqrstuvwxyz1234567890_')) for _ in range(16)])
     arc_api.arc_api.extract_all(archive, output_dir)
 
     os.system(f'pipreqs {output_dir}')
@@ -36,9 +30,9 @@ async def get_container(archive, output_dir):
         dockerfile.writelines(docker_data)
 
     os.chdir(output_dir)
-    os.system('echo %s|sudo -S %s' % ('li95ue74+', f'sudo docker build -t {KEY}:0.0 .'))
+    os.system('echo %s|sudo -S %s' % (PASSWORD, f'sudo docker build -t {key}:0.0 .'))
     os.chdir('../containers')
-    os.system('echo %s|sudo -S %s' % ('li95ue74+', f'sudo docker save {KEY}:0.0 > {KEY}.tar'))
+    os.system('echo %s|sudo -S %s' % (PASSWORD, f'sudo docker save {key}:0.0 > {key}.tar'))
     os.chdir('../')
     shutil.rmtree(output_dir)
-    return KEY
+    return key

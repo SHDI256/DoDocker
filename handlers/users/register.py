@@ -5,6 +5,7 @@ from states.user_states import BaseStates, RegisterStates
 
 from keyboards.inline.register import get_keyboard_for_register
 from keyboards.default.main_menu import get_main_menu_keyboard
+from keyboards.inline.register import get_trial_access_keyboard
 
 from data.db_api.create_tables import User, Containers, Base
 
@@ -33,8 +34,10 @@ async def set_register_state_after_callback(call: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda call: call.data == 'why', state='*')
 async def why_register(call: types.CallbackQuery):
+    keyboard = get_trial_access_keyboard()
     await bot.send_message(call.from_user.id, 'Зачем регистрироваться? Учётная запись даёт доступ ко всем функциям бота, '
-                                              'позволяя не только создавать контейнеры, но и управлять ими. Также Вы можете опробовать бота один раз прямо сейчас!')
+                                              'позволяя не только создавать контейнеры, но и управлять ими. '
+                                              'Также Вы можете опробовать бота один раз прямо сейчас!', reply_markup=keyboard)
 
     await call.answer()
 

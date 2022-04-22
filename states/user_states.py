@@ -5,6 +5,7 @@ class BaseStates(StatesGroup):
     STATE_BOT = State()
     STATE_SUPPORT = State()
     STATE_DOCKER = State()
+    STATE_DOCKER_NAME = State()
 
 
 class RegisterStates(StatesGroup):
