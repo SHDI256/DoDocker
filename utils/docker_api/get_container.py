@@ -19,7 +19,12 @@ async def get_container(archive, output_dir):
 
     os.system(f'pipreqs {output_dir}')
 
-    mainfile = str(arc_api.arc_api.get_main_file(output_dir))
+    mainfile = arc_api.arc_api.get_main_file(output_dir)
+
+    if not mainfile:
+        return False
+
+    mainfile = str(mainfile)
     mainfile = mainfile[mainfile.find('/') + 1:]
 
     with open('dockerfile_template.json') as dockerfile_template:

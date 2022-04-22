@@ -25,7 +25,6 @@ async def set_bot_state(message: types.Message):
 @dp.message_handler(state='*', commands=['docker'])
 async def set_docker_state(message: types.Message):
     state = dp.current_state(user=message.from_user.id)
-    state_data = await state.get_data()
 
     if message.from_user.id in [user.id_user for user in Session.query(User).all()]:
         await state.set_state(BaseStates.all_states[2])

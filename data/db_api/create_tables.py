@@ -1,5 +1,5 @@
 from loader import Session, engine
-from sqlalchemy import Column, Integer, String, ForeignKey, orm
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, orm
 import sqlalchemy.ext.declarative as dec
 
 
@@ -16,20 +16,18 @@ class User(Base):
     containers = orm.relation('Containers', back_populates='user')
 
 
+class TrialAccess(Base):
+    __tablename__ = 'trial'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    id_user = Column(Integer)
+    is_trial = Column(Boolean)
+
+
 class Containers(Base):
     __tablename__ = 'containers'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String, unique=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id_user"))
     user = orm.relation('User')
-
-
-if __name__ == '__main__':
-    Base.metadata.create_all(engine)
-    # user = User()
-    # user.name = 'Daniil'
-    # user.email = 'daniil.shtompel@gmail.com'
-    # Session.add(user)
-    # Session.commit()
-

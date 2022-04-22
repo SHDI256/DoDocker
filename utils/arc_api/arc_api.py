@@ -8,7 +8,7 @@ def extract_all(archive, out_dir):
 
 
 def get_main_file(input_dir):
-    mainfile = None
+    mainfile = False
 
     for filename in ('app.py', 'main.py'):
         try:

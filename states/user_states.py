@@ -11,3 +11,8 @@ class RegisterStates(StatesGroup):
     STATE_REGISTER = State()
     STATE_CHANGE = State()
     STATE_EMAIL = State()
+
+
+class ManagementStates(StatesGroup):
+    STATE_REBUILD = State()
+    STATE_DELETE = State()

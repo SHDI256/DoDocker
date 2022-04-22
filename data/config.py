@@ -11,3 +11,5 @@ PASSWORD = env.str('PASSWORD')
 SUPPORTS = env.list('SUPPORTS')
 
 database_path = env.str('database_path')
+
+NGROK_AUTHTOKEN = env.str('NGROK_AUTHTOKEN')
