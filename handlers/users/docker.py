@@ -140,6 +140,7 @@ async def rebuild_container(message: types.Message):
                 os.remove(f'containers/{key}.tar')
 
                 Session.query(Containers).filter(Containers.key == key).delete()
+                Session.commit()
 
         else:
             containers = list(Session.query(Containers).filter(Containers.user_id == message.from_user.id))
@@ -147,14 +148,14 @@ async def rebuild_container(message: types.Message):
             if len(containers) > 0:
                 keyboard = get_management_keyboard()
                 await bot.send_message(message.from_user.id, 'Ваши контейнеры:\n\n' + '\n'.join(
-                    [f'{i + 1}. {container.key}' for i, container in enumerate(containers)]),
+                    [f'{i + 1}. {container.name}' for i, container in enumerate(containers)]),
                                        reply_markup=keyboard)
 
             else:
                 state = dp.current_state(user=message.from_user.id)
                 await state.set_state(BaseStates.all_states[0])
 
-            await message.answer('Контейнер успешно удалён!')
+
 
     except Exception:
         await message.answer('Несуществующий номер контейнера, попробуйте ещё раз')
